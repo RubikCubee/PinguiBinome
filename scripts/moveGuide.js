@@ -2,6 +2,7 @@ document.addEventListener("DOMContentLoaded", init, false);
 
 var scene = document.querySelector('a-scene');
 var player;
+var table;
 var guide;
 var target; 
 var path; 
@@ -16,105 +17,6 @@ function distance(pos1, pos2)
 {
     var distance = Math.sqrt((pos1.x - pos2.x)*(pos1.x - pos2.x) + (pos1.y - pos2.y)*(pos1.y - pos2.y) +  (pos1.z - pos2.z)*(pos1.z - pos2.z));
     return distance;
-}
-
-class Vec3
-{
-    constructor(x,y,z)
-    {
-        this.x = x || 0;
-        this.y = y || 0;
-        this.z = z || 0;
-    }
-
-    static add(vec1, vec2)
-    {
-        var vec = new Vec3(0,0,0);
-        vec.x = vec1.x + vec2.x;
-        vec.y = vec1.y + vec2.y;
-        vec.z = vec1.z + vec2.z;
-
-        return vec;
-    }
-
-    static sub(vec1, vec2)
-    {
-        var vec = new Vec3(0,0,0);
-        vec.x = vec1.x - vec2.x;
-        vec.y = vec1.y - vec2.y;
-        vec.z = vec1.z - vec2.z;
-
-        return vec;
-    }
-
-    static mul(vec1, cte)
-    {
-        var vec = new Vec3(0,0,0);
-        vec.x = vec1.x * cte;
-        vec.y = vec1.y * cte;
-        vec.z = vec1.z * cte;
-        return vec;
-    }
-
-    static normalize(vect)
-    {
-        var length = Math.sqrt((vect.x*vect.x) + (vect.y*vect.y) + (vect.z*vect.z));
-
-        var vec = new Vec3(0,0,0);
-        vec.x = vect.x/length;
-        vec.y = vect.y/length;
-        vec.z = vect.z/length; 
-
-        return vec;
-    }
-
-    static toVec3(position)
-    {
-        var vec = new Vec3(0,0,0);
-        vec.x = position.x;
-        vec.y = position.y;
-        vec.z = position.z;
-        return vec;
-    }
-
-    static truncate(original, coef)
-    {
-        var vec = this.normalize(original);
-        vec = this.mul(vec, coef);
-        return vec;    
-    }
-
-    isNull()
-    {
-        if(this.x == 0 && this.y == 0 && this.z == 0)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    set(x,y,z)
-    {
-        this.x = x;
-        this.y = y;
-        this.z = z;        
-    }
-
-    dot(v)
-    {
-        return this.x*v.x+ this.y*v.y + this.z*v.z;
-    }
-
-    length()
-    {
-        return Math.sqrt(this.dot(this));
-    }
-
-    print()
-    {
-        alert(this.x + "------" + this.y + "------" + this.z);
-    }
 }
 
 class Obstacle
@@ -136,7 +38,6 @@ class Obstacle
 
 }
 
-// Guide with some vector to move him
 class GuideAutomated 
 {
     constructor()
@@ -176,7 +77,7 @@ class GuideAutomated
     {
         var rot = {"x":0, "y":0, "z":0};
         rot.x = -90;
-        rot.y = initialRotation.y + angle;
+        rot.y = this.initialRotation.y + angle;
         rot.z = 0;
         this.actor.setAttribute("rotation", rot);
 
@@ -199,7 +100,6 @@ class GuideAutomated
     }
 }
 
-
 function init() 
 {    
     // creer le guide
@@ -207,21 +107,28 @@ function init()
     guide.actor.addEventListener('click', onClickGuide);
 
     // get the player/the camera
-    player = document.getElementById("camera")
-
+    player = document.getElementById("camera");
+    table = document.getElementById("table");
+    table.radius = 1.5;
     // initialisation des variables 
     obstacle = new Obstacle(player);
+    obstacle2 = new Obstacle(table);
     steering = new Vec3(0,0,0);
     avoidance = new Vec3(0,0,0);
 }                                                                                                                                            
 
 function onClickGuide(e)
 {
-    var sphere_1 =  document.getElementById("sphere-dir-1"); 
-    var sphere_2 =  document.getElementById("sphere-dir-2"); 
-    var sphere_3 =  document.getElementById("sphere-dir-3"); 
-    var sphere_4 =  document.getElementById("sphere-dir-4"); 
-    path = [sphere_1, sphere_2, sphere_3, sphere_4]
+    var sphereBobEponge = document.getElementById("sphereBobEponge");
+    var sphereLaitierePipe = document.getElementById("sphereLaitierePipe");
+    var sphereFenetre = document.getElementById("sphereFenetre");
+    var sphereMonsieurPomme = document.getElementById("sphereMonsieurPomme");
+    var sphereJeuneFillePerle = document.getElementById("sphereJeuneFillePerle");
+    var sphereCheminee = document.getElementById("sphereCheminee");
+    var sphereBretagne = document.getElementById("sphereBretagne");
+    var sphereAccueil = document.getElementById("sphereAccueil");
+
+    path = [sphereBobEponge, sphereLaitierePipe,sphereFenetre,sphereMonsieurPomme,sphereJeuneFillePerle,sphereCheminee,sphereBretagne,sphereAccueil];
 
     currentNode = 0;
     target = path[currentNode];
@@ -257,10 +164,9 @@ function collisionAvoidance()
     var ahead = Vec3.add(guide.getPosition(), Vec3.mul(guide.velocity, MAX_SEE_AHEAD));
     var ahead2 = Vec3.add(guide.getPosition(), Vec3.mul(guide.velocity, MAX_SEE_AHEAD*0.5));
 
-
     var collision = false;
 
-    if(lineIntersectCircle(ahead, ahead2, obstacle))
+    if(lineIntersectCircle(ahead, ahead2, obstacle) || lineIntersectCircle(ahead, ahead2, obstacle2) )
     {
         collision = true;
     }
@@ -273,6 +179,13 @@ function collisionAvoidance()
     {
         avoidance.x = ahead.x - obstacle.getCenter().x;
         avoidance.z = ahead.z - obstacle.getCenter().z;
+
+        avoidance = Vec3.mul(Vec3.normalize(avoidance), MAX_AVOIDANCE_FORCE);
+    }
+    else if(obstacle2 != null & collision)
+    {
+        avoidance.x = ahead.x - obstacle2.getCenter().x;
+        avoidance.z = ahead.z - obstacle2.getCenter().z;
 
         avoidance = Vec3.mul(Vec3.normalize(avoidance), MAX_AVOIDANCE_FORCE);
     }
@@ -306,9 +219,9 @@ function moveGuide()
 function lookAt(oldDirection, newDirection)
 {
     //var angle = Math.atan2(oldDirection.z - newDirection.z, oldDirection.x - newDirection.x)*180 / Math.PI;
-    var angle = Math.acos(oldDirection.dot(newDirection)/oldDirection.length() * newDirection.length());
-    alert(angle);
-    guide.setRotation(angle);
+    //var angle = Math.acos(oldDirection.dot(newDirection)/oldDirection.length() * newDirection.length());
+    //alert(angle);
+    //guide.setRotation(angle);
    
 }
 

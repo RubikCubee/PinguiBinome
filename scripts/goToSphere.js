@@ -11,11 +11,14 @@ function init()
 {    
     nextTarget = 0
     // Gestion du click sur une sphere
-    document.getElementById("sphere-dir-1").addEventListener('click', onClickSphere)
-    document.getElementById("sphere-dir-2").addEventListener('click', onClickSphere)
-    document.getElementById("sphere-dir-3").addEventListener('click', onClickSphere)
-    document.getElementById("sphere-dir-4").addEventListener('click', onClickSphere)
-    document.getElementById("penguin").addEventListener('click', onClickGuide)
+    document.getElementById("sphereBobEponge").addEventListener('click', onClickSphere);
+    document.getElementById("sphereLaitierePipe").addEventListener('click', onClickSphere);
+    document.getElementById("sphereFenetre").addEventListener('click', onClickSphere);
+    document.getElementById("sphereMonsieurPomme").addEventListener('click', onClickSphere);
+    document.getElementById("sphereJeuneFillePerle").addEventListener('click', onClickSphere);
+    document.getElementById("sphereCheminee").addEventListener('click', onClickSphere);
+    document.getElementById("sphereBretagne").addEventListener('click', onClickSphere);
+    document.getElementById("sphereAccueil").addEventListener('click', onClickSphere);
 }
 
 function onClickSphere(e)
@@ -25,50 +28,9 @@ function onClickSphere(e)
     objToMove = document.getElementById("camera")
 }
 
-function onClickGuide(e)
-{
-    objToMove = document.getElementById("penguin")
-    followTraj()
-}
-
-function followTraj()
-{
-    var sphere_1 =  document.getElementById("sphere-dir-1"); 
-    var sphere_2 =  document.getElementById("sphere-dir-2"); 
-    var sphere_3 =  document.getElementById("sphere-dir-3"); 
-    var sphere_4 =  document.getElementById("sphere-dir-4"); 
-    var trajectoire = [sphere_1, sphere_2, sphere_3, sphere_4]
-  
-    positionBoule = trajectoire[nextTarget].getAttribute("position")
-    rotation_obj = objToMove.getAttribute("rotation")
-    objToMove.setAttribute("rotation",rotation_obj)
-    
-    //objToMove.setAttribute("look-at", trajectoire[nextTarget])
-    positionReached = setInterval(moveToSphere, 50)
-}
-
 function stopAnim()
 {
-    clearInterval(positionReached)
-
-    nextTarget++
-    if(nextTarget < 4)
-    {
-        rotation_obj.z += 90
-        followTraj()
-    }
-    else 
-    {
-        nextTarget = 0
-        rotation_obj.z += 90
-        followTraj()
-    }
-}
-
-// Fonction pour éviter les obstacles 
-function avoidObstacle()
-{
-
+    clearInterval(positionReached);
 }
 
 function moveToSphere()

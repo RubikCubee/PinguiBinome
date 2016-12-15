@@ -184,14 +184,12 @@
 		<a-sphere radius="0.2" color="blue" position="0 0 4"></a-sphere>-->
 
 		<!-- table -->
-		<a-entity id="table">
+		<a-entity id="table" position ="0 0 0">
 			<a-entity mixin="wood planche" position="0 1.1 0"  scale="2 0.1 2">
 			</a-entity>
 
 			<!--pied de la table-->
 			<a-entity mixin="wood pied_table" position=" 0 0.5 0"></a-entity>
-	
-
 		</a-entity>
 
 		<!--tapis-->
@@ -291,12 +289,10 @@
 		<!-- Position accueil -->
 		<a-sphere id="sphereAccueil" radius="0.5" color="white" opacity="0.7" position="2.5 2 0"></a-sphere>
 		
-
-
-
-   
 	</a-scene>
 
+	<script src="scripts/Vec3.js"></script>
+	<script src="scripts/goToSphere.js"> </script> 
 	<script src="scripts/moveGuide.js"> </script> 
 	<script src="scripts/ikea.js"> </script> 
 </body>
