@@ -13,8 +13,8 @@
 	<a-scene stats="false" vr-mode-ui="enabled: false">
 
 		<!-- La caméra -->
-		<a-entity id="camera" camera="userHeight: 2.0" look-controls wasd-controls>
-			<a-entity cursor="fuse: false; fuseTimeout: 500" position="0 0 -0.2" geometry="primitive: sphere ; radius: 0.01 " material="color: pink; transparent: true; opacity:0.3;  shader: flat">
+		<a-entity id="camera" camera="userHeight: 2.0" look-controls wasd-controls position="-6 0 4" rotation="0 -45 0">
+			<a-entity cursor="fuse: false; fuseTimeout: 500"  geometry="primitive: sphere ; radius: 0.01 " material="color: pink; transparent: true; opacity:0.3;  shader: flat">
 			</a-entity>
 		</a-entity>
 
@@ -223,7 +223,10 @@
 		<a-obj-model id="chandelier-1" src="#chandelier-obj" mtl="#chandelier-mtl" scale="0.015 0.015 0.015" position ="-5 2.2 0" > </a-obj-model>
 		<a-obj-model id="chandelier-2" src="#chandelier-obj" mtl="#chandelier-mtl" scale="0.015 0.015 0.015" position ="4 2.2 0"> </a-obj-model>
 
-		
+		<!-- Les lumières -->
+		<a-entity position="-5 4.5 0" light="type: point; color: #CCC ; intensity: 0.5"></a-entity>
+		<a-entity position="4 4.5 0" light="type: point; color: #CCC ; intensity: 0.5"></a-entity>
+
 		<!-- Une autre porte -->
 		<a-entity geometry="primitive: plane; width: 3; height: 4" position="6 2 5.95" material="side: double; src: url(textures/door.jpg)"></a-entity>
 
@@ -288,7 +291,6 @@
 
 		<!-- Position accueil -->
 		<a-sphere id="sphereAccueil" radius="0.5" color="white" opacity="0.7" position="2.5 2 0"></a-sphere>
-		
 	</a-scene>
 
 	<script src="scripts/Vec3.js"></script>
