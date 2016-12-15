@@ -225,7 +225,10 @@
 		<a-obj-model id="chandelier-1" src="#chandelier-obj" mtl="#chandelier-mtl" scale="0.015 0.015 0.015" position ="-5 2.2 0" > </a-obj-model>
 		<a-obj-model id="chandelier-2" src="#chandelier-obj" mtl="#chandelier-mtl" scale="0.015 0.015 0.015" position ="4 2.2 0"> </a-obj-model>
 
-		
+		<!-- Les lumières -->
+		<a-entity position="-5 4.5 0" light="type: point; color: #CCC ; intensity: 0.5"></a-entity>
+		<a-entity position="4 4.5 0" light="type: point; color: #CCC ; intensity: 0.5"></a-entity>
+
 		<!-- Une autre porte -->
 		<a-entity geometry="primitive: plane; width: 3; height: 4" position="6 2 5.95" material="side: double; src: url(textures/door.jpg)"></a-entity>
 
