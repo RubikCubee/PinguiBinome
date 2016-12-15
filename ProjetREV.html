@@ -13,8 +13,8 @@
 	<a-scene stats="false" vr-mode-ui="enabled: false">
 
 		<!-- La caméra -->
-		<a-entity id="camera" camera="userHeight: 2.0" look-controls wasd-controls>
-			<a-entity cursor="fuse: false; fuseTimeout: 500" position="0 0 -0.2" geometry="primitive: sphere ; radius: 0.01 " material="color: pink; transparent: true; opacity:0.3;  shader: flat">
+		<a-entity id="camera" camera="userHeight: 2.0" look-controls wasd-controls position="-6 0 4" rotation="0 -45 0">
+			<a-entity cursor="fuse: false; fuseTimeout: 500"  geometry="primitive: sphere ; radius: 0.01 " material="color: pink; transparent: true; opacity:0.3;  shader: flat">
 			</a-entity>
 		</a-entity>
 
@@ -293,11 +293,7 @@
 
 		<!-- Position accueil -->
 		<a-sphere id="sphereAccueil" radius="0.5" color="white" opacity="0.7" position="2.5 2 0"></a-sphere>
-		
 
-
-
-   
 	</a-scene>
 
 	<script src="scripts/moveGuide.js"> </script> 
